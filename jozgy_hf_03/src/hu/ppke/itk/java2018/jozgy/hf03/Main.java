@@ -1,0 +1,10 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Queue queue = new Queue();
+		queue.getBoard().generateGuilds(queue);
+	}
+
+}

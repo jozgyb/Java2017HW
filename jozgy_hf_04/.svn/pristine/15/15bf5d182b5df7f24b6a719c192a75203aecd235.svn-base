@@ -1,0 +1,15 @@
+package hu.ppke.itk.java2018.jozgy.hf04;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Command commandMessage = new Command();
+		
+		ClientBackEnd client = new ClientBackEnd(commandMessage);
+		GameServer server = new GameServer(commandMessage);
+		ClientFrontEnd.main(args);
+		
+
+	}
+
+}

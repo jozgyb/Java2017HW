@@ -1,0 +1,68 @@
+package hu.ppke.itk.java2018.jozgy.hf02;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+public class Circle implements Component {
+
+	private float centerX, centerY, radius;
+
+	public String getCenterX() {
+		return Float.toString(centerX);
+	}
+
+	public void setCenterX(float centerX) {
+		this.centerX = centerX;
+	}
+
+	public String getCenterY() {
+		return Float.toString(centerY);
+	}
+
+	public void setCenterY(float centerY) {
+		this.centerY = centerY;
+	}
+
+	public String getRadius() {
+		return Float.toString(radius);
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+	
+	@Override
+	public void write(Writer output) throws IOException {
+		BufferedWriter bufferedWriter = new BufferedWriter(output);
+		String code = "<circle cx='" + getCenterX() + "' cy='" + getCenterY() + "' r='" + getRadius()
+				+ "' stroke='black' fill='black' />";
+		bufferedWriter.write(code, 0, code.length());
+		bufferedWriter.newLine();
+		bufferedWriter.flush();
+	}
+
+	@Override
+	public void translate(float dx, float dy) {
+		this.centerX += dx;
+		this.centerY += dy;
+	}
+
+	@Override
+	public void flipHorizontal(float axis) {
+		centerY = (centerY > axis) ? centerY + 2 * (axis - centerY) : centerY - 2*( centerY - axis);
+		
+	}
+
+	@Override
+	public void flipVertical(float axis) {
+		centerX = (centerX > axis) ? centerX + 2 * (axis - centerX) : centerX - 2*( centerX - axis);
+		
+	}
+
+	public Circle(float centerX, float centerY, float radius) {
+		this.centerX = centerX;
+		this.centerY = centerY;
+		this.radius = radius;
+	}
+}

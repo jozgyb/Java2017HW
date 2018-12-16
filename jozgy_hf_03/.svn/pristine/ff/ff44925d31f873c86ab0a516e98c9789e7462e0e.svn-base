@@ -1,0 +1,42 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.HashMap;
+
+public class Hero {
+	private String name;
+	private int notoriety;
+	private HashMap<String, Boolean> inventory;
+	
+	public Hero(String name, int notoriety) {
+		super();
+		this.name = name;
+		this.notoriety = notoriety;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNotoriety() {
+		return notoriety;
+	}
+
+	public void setNotoriety(int notoriety) {
+		this.notoriety = notoriety;
+	}
+
+
+	public void setInventory(String item) {
+		inventory.put(item, true);
+	}
+	
+	public void removeFromInventory(String item) {
+		inventory.remove(item);
+	}
+	
+	
+}

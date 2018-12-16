@@ -1,0 +1,42 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+
+public class Hero {
+	private String name;
+	private int reputation;
+	private ArrayList<String> inventory;
+	
+	public Hero(String name, int notoriety) {
+		super();
+		this.name = name;
+		this.reputation = notoriety;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getReputation() {
+		return reputation;
+	}
+
+	public void setReputation(int reputation) {
+		this.reputation = reputation;
+	}
+
+
+	public void setInventory(String item) {
+		inventory.add(item);
+	}
+	
+	public void removeFromInventory(String item) {
+		inventory.remove(item);
+	}
+	
+	
+}

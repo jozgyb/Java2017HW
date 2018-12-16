@@ -1,0 +1,94 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Queue implements Runnable {
+	private int randomNumber;
+	private NoticeBoard board = new NoticeBoard();
+	private ArrayList<Guild> guilds = new ArrayList<>();
+	
+	private String [] equipments = 
+		{
+			"Infinity Edge",
+			"Rapid firecanon",
+			"Ninja Tabi",
+			"Morellonomicon",
+			"Berserker's greaves",
+			"Black Cleaver",
+			"Statik shiv",
+			"Luden's echo",
+			"Tear of the godess"		
+		};
+	
+	public String getRandomItem() {
+		return equipments[rand.nextInt(equipments.length)];
+	}
+	
+	private static Random rand = new Random();
+
+	public ArrayList<Guild> getGuilds() {
+		return guilds;
+	}
+
+	public void setGuilds(ArrayList<Guild> guilds) {
+		this.guilds = guilds;
+	}
+
+	public synchronized NoticeBoard getBoard() {
+		return board;
+	}
+
+	public void setBoard(NoticeBoard board) {
+		this.board = board;
+	}
+	
+	
+	protected synchronized void generateQuest(int incrementer) {
+		int randReputation = randomNumber / 2;
+		int randTime = 5000;
+		int randRep = randomNumber / 4;
+		int randReqRep = 5;
+		
+		ArrayList<String> randItems = new ArrayList<>();
+		
+		do {
+			String currentItem = getRandomItem();
+			randItems.add(currentItem);
+			board.addItem(currentItem);
+		} while(rand.nextInt(2)!= 0);
+		
+		board.addQuest(new Quest(rand.nextInt(randReputation), rand.nextInt(randTime), rand.nextInt(randRep*((incrementer*randReqRep) / randomNumber) + 1), randItems));
+	}
+	
+	public void generateGuilds() {
+		guilds.add(new Guild("Ionia", 0));
+		guilds.get(0).addMember(new Hero("Irelia", 0, 0));
+		guilds.get(0).addMember(new Hero("Yasuo", 0, 0));
+		guilds.add(new Guild("Freljord", 0));
+		guilds.get(0).addMember(new Hero("Rammus", 0, 1));
+		guilds.get(0).addMember(new Hero("Ashe", 0, 1));
+		guilds.add(new Guild("Void", 0));
+		guilds.get(0).addMember(new Hero("KhaZix", 0, 2));
+		guilds.get(0).addMember(new Hero("Kassadin", 0, 2));
+		guilds.add(new Guild("Explorers", 0));
+		guilds.get(0).addMember(new Hero("Ezreal", 0, 3));
+		guilds.get(0).addMember(new Hero("Taric", 0, 3));
+		
+		
+	}
+	
+	public Queue() {
+		randomNumber = 30 * 2 * 2;
+		new Thread(this).start();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+
+}

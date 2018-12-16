@@ -1,0 +1,51 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+
+public class Quest {
+	private int rewardReputation;
+	private int requiredTime;
+	private int requiredReputation;
+	private ArrayList<String> requiredEquipments;
+	
+	public int getRewardReputation() {
+		return rewardReputation;
+	}
+
+	public void setRewardReputation(int rewardReputation) {
+		this.rewardReputation = rewardReputation;
+	}
+
+	public int getRequiredTime() {
+		return requiredTime;
+	}
+
+	public void setRequiredTime(int requiredTime) {
+		this.requiredTime = requiredTime;
+	}
+
+	public int getRequiredReputation() {
+		return requiredReputation;
+	}
+
+	public void setRequiredReputation(int requiredReputation) {
+		this.requiredReputation = requiredReputation;
+	}
+
+	public ArrayList<String> getRequiredEquipments() {
+		return requiredEquipments;
+	}
+
+	public void setRequiredEquipments(ArrayList<String> requiredEquipments) {
+		this.requiredEquipments = requiredEquipments;
+	}
+
+	public Quest(int rewardReputation, int requiredTime, int requiredReputation, ArrayList<String> requiredEquipments) {
+		super();
+		this.rewardReputation = rewardReputation;
+		this.requiredTime = requiredTime;
+		this.requiredReputation = requiredReputation;
+		this.requiredEquipments = requiredEquipments;
+	}
+
+}

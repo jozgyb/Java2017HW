@@ -1,0 +1,6 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+public class Queue {
+	NoticeBoard board = new NoticeBoard();
+
+}

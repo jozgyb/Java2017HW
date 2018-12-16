@@ -1,0 +1,192 @@
+package hu.ppke.itk.java2018.jozgy.hf02;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Picture implements Component {
+	private ArrayList<Group> pictureGroups = new ArrayList<>();
+
+	public void build(Reader input) throws IOException, SyntaxErrorException {
+		try (BufferedReader inputBuffer = new BufferedReader(input)) {
+			while (inputBuffer.ready()) {
+				String line = inputBuffer.readLine();
+				int indexOfCurrentlyReadLine = 1;
+				String command = new String();
+				if (line.contains(" ")) {
+					command = line.substring(0, line.indexOf(" "));
+				} else {
+					command = line;
+				}
+				switch (command) {
+				case "add_line_segments":
+					String polyLineArgumentsInLine = line.substring(line.indexOf(" ") + 1);
+					String[] polyLineArguments = polyLineArgumentsInLine.split(" ");
+					ArrayList<Float> argumentsAsFloats = new ArrayList<>();
+					for (int i = 0; i < polyLineArguments.length; i++) {
+						argumentsAsFloats.add(Float.parseFloat(polyLineArguments[i]));
+					}
+					if (argumentsAsFloats.size() < 4 || argumentsAsFloats.size() % 2 != 0) {
+						throw new SyntaxErrorException("Error at line " + indexOfCurrentlyReadLine
+								+ " Invalid Arguments! \n Must contain at least 4 arguments and the number of arguments should be even.");
+					} else {
+						PolyLine newPolyLine = new PolyLine();
+						for (int i = 0; i < argumentsAsFloats.size(); i++) {
+							if (i % 2 == 0) {
+								newPolyLine.setPointX(argumentsAsFloats.get(i));
+							} else {
+								newPolyLine.setPointY(argumentsAsFloats.get(i));
+							}
+						}
+						pictureGroups.get(pictureGroups.size() - 1).addComponent(newPolyLine);
+					}
+					break;
+				case "add_circle":
+					String circleArgumentsInLine = line.substring(line.indexOf(" ") + 1);
+					String[] circleArguments = circleArgumentsInLine.split(" ");
+					if (circleArguments.length != 3) {
+						throw new SyntaxErrorException(
+								"Error at line " + indexOfCurrentlyReadLine + " A circle must have 3 arguments.");
+					} else {
+						Circle newCircle = new Circle(Float.parseFloat(circleArguments[0]),
+								Float.parseFloat(circleArguments[1]), Float.parseFloat(circleArguments[2]));
+						pictureGroups.get(pictureGroups.size() - 1).addComponent(newCircle);
+					}
+					break;
+
+				case "add_rectangle":
+					String rectangleArgumentsInLine = line.substring(line.indexOf(" ") + 1);
+					String[] rectangleArguments = rectangleArgumentsInLine.split(" ");
+					if (rectangleArguments.length != 4) {
+						throw new SyntaxErrorException(
+								"Error at line " + indexOfCurrentlyReadLine + " A rectangle must have 4 arguments.");
+					} else {
+						Rectangle newRectangle = new Rectangle(Float.parseFloat(rectangleArguments[0]),
+								Float.parseFloat(rectangleArguments[1]), Float.parseFloat(rectangleArguments[2]),
+								Float.parseFloat(rectangleArguments[3]));
+						pictureGroups.get(pictureGroups.size() - 1).addComponent(newRectangle);
+					}
+					break;
+
+				case "new_group":
+					Group newGroup = new Group();
+					pictureGroups.add(newGroup);
+					break;
+
+				case "translate":
+					String translateArgumentsInLine = line.substring(line.indexOf(" ") + 1);
+					String[] translateArguments = translateArgumentsInLine.split(" ");
+					if (translateArguments.length != 2) {
+						throw new SyntaxErrorException(
+								"Error at line " + indexOfCurrentlyReadLine + " Translate must have 2 arguments.");
+					} else {
+						pictureGroups.get(pictureGroups.size() - 1).getLastComponent().translate(
+								Float.parseFloat(translateArguments[0]), Float.parseFloat(translateArguments[1]));
+					}
+					break;
+
+				case "flip_vertical":
+					String flip_verticalArgumentsInLine = line.substring(line.indexOf(" ") + 1);
+					String[] flip_verticalArguments = flip_verticalArgumentsInLine.split(" ");
+					if (flip_verticalArguments.length != 1) {
+						throw new SyntaxErrorException(
+								"Error at line " + indexOfCurrentlyReadLine + " flip_vertical must have 1 argument.");
+					} else {
+						pictureGroups.get(pictureGroups.size() - 1).getLastComponent()
+								.flipVertical(Float.parseFloat(flip_verticalArguments[0]));
+					}
+					break;
+
+				case "flip_horizontal":
+					String flip_horizontalArgumentsInLine = line.substring(line.indexOf(" ") + 1);
+					String[] flip_horizontalArguments = flip_horizontalArgumentsInLine.split(" ");
+					if (flip_horizontalArguments.length != 1) {
+						throw new SyntaxErrorException(
+								"Error at line " + indexOfCurrentlyReadLine + " flip_horizontal must have 1 argument.");
+					} else {
+						pictureGroups.get(pictureGroups.size() - 1).getLastComponent()
+								.flipHorizontal(Float.parseFloat(flip_horizontalArguments[0]));
+					}
+					break;
+
+				case "merge":
+					try {
+						if (pictureGroups.size() < 2)
+							throw new SyntaxErrorException("WARNING at line" + indexOfCurrentlyReadLine + " Can't merge! Too few groups.");
+						pictureGroups.get(pictureGroups.size() - 2)
+								.addComponent(pictureGroups.get(pictureGroups.size() - 1));
+						pictureGroups.remove(pictureGroups.size() - 1);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					break;
+
+				default:
+					break;
+				}
+				indexOfCurrentlyReadLine++;
+			}
+		}
+	}
+
+	@Override
+	public void write(Writer output) throws IOException {
+		BufferedWriter pictureWriter = new BufferedWriter(output);
+		pictureWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+		pictureWriter.newLine();
+		pictureWriter.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
+		pictureWriter.newLine();
+		pictureWriter.flush();
+		for (Group group : pictureGroups) {
+			group.write(output);
+		}
+		pictureWriter.write("</svg>");
+		pictureWriter.flush();
+	}
+
+	@Override
+	public void translate(float dx, float dy) {
+		pictureGroups.get(pictureGroups.size() - 1).translate(dx, dy);
+
+	}
+
+	@Override
+	public void flipHorizontal(float axis) {
+		pictureGroups.get(pictureGroups.size() - 1).flipHorizontal(axis);
+
+	}
+
+	@Override
+	public void flipVertical(float axis) {
+		pictureGroups.get(pictureGroups.size() - 1).flipVertical(axis);
+
+	}
+
+	public static void main(String args[]) throws IOException {
+		try {
+			Picture picture = new Picture();
+
+			picture.build(new FileReader(args[args.length - 2]));
+
+			if (args[0].equals("--html")) {
+
+			} else {
+				picture.write(new FileWriter(args[args.length - 1]));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SyntaxErrorException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

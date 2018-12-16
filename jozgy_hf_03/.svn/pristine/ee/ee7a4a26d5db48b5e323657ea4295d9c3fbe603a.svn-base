@@ -1,0 +1,29 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+
+public class Guild {
+	private ArrayList<Hero> members;
+	private int sumOfGold;
+	
+	public void addMember(Hero name) {
+		members.add(name);
+	}
+
+	public Guild(int sumOfGold) {
+		this.sumOfGold = sumOfGold;
+	}
+	
+	public int getSumOfGold() {
+		return sumOfGold;
+	}
+
+	public void setSumOfGold(int sumOfGold) {
+		this.sumOfGold = sumOfGold;
+	}
+
+	public Guild(ArrayList<Hero> members, int sumOfGold) {
+		this.members = members;
+		this.sumOfGold = sumOfGold;
+	}
+}

@@ -1,0 +1,85 @@
+package hu.ppke.itk.java2018.jozgy.hf04;
+
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.time.Instant;
+import java.util.ArrayList;
+
+import hu.ppke.itk.java2018.jozgy.hf04.Command.Package;
+
+public class Server implements Runnable {
+	
+	boolean running = true;
+	
+	static private DatagramSocket socket;
+	private Command commandMessage;
+	
+	public Server(Command commandMessage, int port) throws Exception {
+		try {
+			this.commandMessage = commandMessage;
+			socket = new DatagramSocket(port);
+			new Thread(this).start();
+		} catch (Exception e) {
+			throw new Exception("Port is already bound!");
+		}
+	}
+	
+	public class ThreadOfClient implements Runnable {
+		
+		PackageSender sender;
+
+		@Override
+		public void run() {
+			try {
+				String command = sender.getCommand();
+				InetAddress clientIP = sender.getIP();
+				int clientPort = sender.getPort();
+				
+				//TODO: commandMessage feldolgozas
+				commandMessage.engineWrite(new Package(command, clientIP, clientPort));
+				
+				ArrayList<Package> output = commandMessage.socketRead();
+				
+				for (int i = 0; i < output.size(); i++) {
+					Command.Package cmdPackage = output.get(i);
+					if(!cmdPackage.needsAddress()) {
+						continue;
+					}
+					sender.send(cmdPackage.getCommand(), cmdPackage.getIp(), cmdPackage.getPort());
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		public ThreadOfClient(PackageSender sender) {
+			this.sender = sender;
+		}
+	}
+
+
+	@Override
+	public void run() {
+		while(running) {
+			try {
+				PackageSender serverSender = new PackageSender(socket);
+				serverSender.receive();
+				
+				new Thread(new ThreadOfClient(serverSender)).start();
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		socket.close();
+	}
+	
+	public void stop() {
+		Instant instant = Instant.now();
+		System.out.println(instant + "Server SHUTDOWN");
+		running = false;
+	}
+}

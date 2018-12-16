@@ -1,0 +1,33 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+
+public class Queue implements Runnable {
+	private NoticeBoard board = new NoticeBoard();
+	private ArrayList<Guild> guilds = new ArrayList<>();
+
+	public ArrayList<Guild> getGuilds() {
+		return guilds;
+	}
+
+	public void setGuilds(ArrayList<Guild> guilds) {
+		this.guilds = guilds;
+	}
+
+	public NoticeBoard getBoard() {
+		return board;
+	}
+
+	public void setBoard(NoticeBoard board) {
+		this.board = board;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+
+}

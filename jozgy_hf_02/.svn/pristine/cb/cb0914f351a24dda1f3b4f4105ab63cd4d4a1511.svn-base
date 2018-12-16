@@ -1,0 +1,9 @@
+A teglalap tukrozesenel csak a bal-felso sarkot tukrozod.
+A `BufferedReader.ready()` pl. lassu fajlrendszereknel nem teljesen ugy mukodik,
+ahogy varnad.
+Nagyon szep hibakezeles, az egyetlen problema, hogy a cikluson belul mindig 1-re
+allitod az `indexOfCurrentlyReadLine` valtozot. Illetve, hogy a merge-nel dobott
+kivetel eseten nem irod ki az uzenetet.
+Nincs indentacio.
+Html-re nem mukodik.
+Egyebkent szep.

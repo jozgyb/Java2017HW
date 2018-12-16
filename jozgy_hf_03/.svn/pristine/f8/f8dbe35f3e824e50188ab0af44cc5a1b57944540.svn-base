@@ -1,0 +1,77 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Queue implements Runnable {
+	private int randomNumber;
+	private NoticeBoard board = new NoticeBoard();
+	private ArrayList<Guild> guilds = new ArrayList<>();
+	
+	private String [] equipments = 
+		{
+			"Infinity Edge",
+			"Rapid firecanon",
+			"Ninja Tabi",
+			"Morellonomicon",
+			"Berserker's greaves",
+			"Black Cleaver",
+			"Statik shiv",
+			"Luden's echo",
+			"Tear of the godess"		
+		};
+	
+	public String getRandomItem() {
+		return equipments[rand.nextInt(equipments.length)];
+	}
+	
+	private static Random rand = new Random();
+
+	public ArrayList<Guild> getGuilds() {
+		return guilds;
+	}
+
+	public void setGuilds(ArrayList<Guild> guilds) {
+		this.guilds = guilds;
+	}
+
+	public synchronized NoticeBoard getBoard() {
+		return board;
+	}
+
+	public void setBoard(NoticeBoard board) {
+		this.board = board;
+	}
+	
+	
+	protected synchronized void generateQuest(int incrementer) {
+		int randReputation = randomNumber / 2;
+		int randTime = 5000;
+		int randRep = randomNumber / 4;
+		int randReqRep = 5;
+		
+		ArrayList<String> randItems = new ArrayList<>();
+		
+		do {
+			String currentItem = getRandomItem();
+			randItems.add(currentItem);
+			board.addItem(currentItem);
+		} while(rand.nextInt(2)!= 0);
+		
+		board.addQuest(new Quest(rand.nextInt(randReputation), rand.nextInt(randTime), rand.nextInt(randRep*((incrementer*randReqRep) / randomNumber) + 1), randItems));
+	}
+	
+	public Queue() {
+		randomNumber = 30 * 2 * 2;
+		new Thread(this).start();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+
+}

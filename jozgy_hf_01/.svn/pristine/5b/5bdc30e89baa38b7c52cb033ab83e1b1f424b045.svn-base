@@ -1,0 +1,10 @@
+package hu.ppke.itk.java2018.jozgy.hf01;
+
+public class CounterWeightScale {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

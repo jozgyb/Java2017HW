@@ -1,0 +1,19 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+
+public class Quest {
+	private int rewardReputation;
+	private int requiredTime;
+	private int requiredReputation;
+	private ArrayList<String> requiredEquipments;
+	
+	public Quest(int rewardReputation, int requiredTime, int requiredReputation, ArrayList<String> requiredEquipments) {
+		super();
+		this.rewardReputation = rewardReputation;
+		this.requiredTime = requiredTime;
+		this.requiredReputation = requiredReputation;
+		this.requiredEquipments = requiredEquipments;
+	}
+
+}

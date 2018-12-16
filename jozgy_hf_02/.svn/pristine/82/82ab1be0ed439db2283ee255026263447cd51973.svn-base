@@ -1,0 +1,78 @@
+package hu.ppke.itk.java2018.jozgy.hf02;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+public class Rectangle implements Component{
+	private float topLeftX, topLeftY, width, height;
+
+	public Rectangle(float topLeftX, float topLeftY, float width, float height) {
+		super();
+		this.topLeftX = topLeftX;
+		this.topLeftY = topLeftY;
+		this.width = width;
+		this.height = height;
+	}
+
+	public float getTopLeftX() {
+		return topLeftX;
+	}
+
+	public void setTopLeftX(float topLeftX) {
+		this.topLeftX = topLeftX;
+	}
+
+	public float getTopLeftY() {
+		return topLeftY;
+	}
+
+	public void setTopLeftY(float topLeftY) {
+		this.topLeftY = topLeftY;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+	
+	@Override
+	public void write(Writer output) throws IOException {
+		BufferedWriter bufferedWriter = new BufferedWriter(output);
+		String code = "<rect x='" + getTopLeftX() + "' y='" + getTopLeftY() + "' " + "" + "width='" + getWidth()
+				+ "' height='" + getHeight() + "' " + "stroke='black' " + "fill='black' />";
+		bufferedWriter.write(code, 0, code.length());
+		bufferedWriter.newLine();
+		bufferedWriter.flush();
+	}
+
+	@Override
+	public void translate(float dx, float dy) {
+		this.topLeftX += dx;
+		this.topLeftY += dy;
+		
+	}
+
+	@Override
+	public void flipHorizontal(float axis) {
+		topLeftY = topLeftY + 2 * (topLeftY - axis);
+		
+	}
+
+	@Override
+	public void flipVertical(float axis) {
+		topLeftX = topLeftX + 2 * (topLeftX - axis);
+		
+	}
+}

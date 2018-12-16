@@ -1,0 +1,19 @@
+package hu.ppke.itk.java2018.jozgy.hf03;
+
+import java.util.ArrayList;
+
+public class NoticeBoard {
+	private ArrayList<Quest> availableQuests;
+	
+	public ArrayList<Quest> getAvailableQuests() {
+		return availableQuests;
+	}
+
+	public void addQuest(Quest newQuest) {
+		availableQuests.add(newQuest);
+	}
+	
+	public void removeQuest(Quest newQuest) {
+		availableQuests.remove(newQuest);
+	}
+}
